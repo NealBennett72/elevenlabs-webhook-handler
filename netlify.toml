@@ -1,0 +1,25 @@
+[build]
+  functions = "netlify/functions"
+  publish = "public"
+
+[functions]
+  node_bundler = "nft"
+
+# Environment variables (set these in Netlify dashboard)
+# 
+# Secrets (sensitive):
+# OPENAI_API_KEY = "your_openai_api_key"
+# MANDRILL_API_KEY = "your_mandrill_api_key"
+#
+# Non-secrets (safe configs):
+# OPENAI_MODEL = "gpt-4o-mini"
+# MANDRILL_USER = "neal@beethovenathome.com" 
+# MANDRILL_HOST = "smtp.mandrillapp.com"
+# TARGET_EMAIL = "info@beethovenathome.com"
+
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"

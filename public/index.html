@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElevenLabs Webhook Handler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .endpoint-box {
+            background-color: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .info {
+            background-color: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d9ff;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin: 10px 0;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ElevenLabs Webhook Handler</h1>
+        
+        <div class="status success">
+            ✅ Webhook handler is deployed and ready!
+        </div>
+
+        <h2>Webhook Endpoint</h2>
+        <p>Configure your ElevenLabs webhook to send POST requests to:</p>
+        <div class="endpoint-box" id="endpoint-url">
+            https://your-site-name.netlify.app/.netlify/functions/webhook-handler
+        </div>
+
+        <h2>How it works</h2>
+        <ul>
+            <li>Receives webhook from ElevenLabs with transcript data</li>
+            <li>Uses OpenAI GPT-4o-mini API to generate a human-readable summary</li>
+            <li>Sends both the summary and full transcript via email to info@beethovenathome.com</li>
+            <li>Uses Mandrill SMTP for reliable email delivery</li>
+        </ul>
+
+        <h2>Setup Instructions</h2>
+        <ol>
+            <li>Set up environment variables in your Netlify dashboard:
+                <ul>
+                    <li><strong>Secrets:</strong></li>
+                    <ul>
+                        <li><code>OPENAI_API_KEY</code> - Your OpenAI API key</li>
+                        <li><code>MANDRILL_API_KEY</code> - Your Mandrill API key</li>
+                    </ul>
+                    <li><strong>Configuration:</strong></li>
+                    <ul>
+                        <li><code>OPENAI_MODEL</code> - AI model to use (default: gpt-4o-mini)</li>
+                        <li><code>MANDRILL_USER</code> - Sender email address</li>
+                        <li><code>MANDRILL_HOST</code> - SMTP host (default: smtp.mandrillapp.com)</li>
+                        <li><code>TARGET_EMAIL</code> - Destination email address</li>
+                    </ul>
+                </ul>
+            </li>
+            <li>Update the webhook URL above with your actual Netlify site name</li>
+            <li>Configure ElevenLabs to send webhooks to your endpoint</li>
+        </ol>
+
+        <div class="status info">
+            💡 Check your Netlify Functions logs to monitor webhook processing
+        </div>
+
+        <h2>Testing</h2>
+        <p>You can test the webhook handler by sending a POST request with JSON data containing a <code>transcript</code> field.</p>
+    </div>
+
+    <script>
+        // Auto-update the endpoint URL if we can detect the current domain
+        if (window.location.hostname !== 'localhost') {
+            const endpointUrl = `https://${window.location.hostname}/.netlify/functions/webhook-handler`;
+            document.getElementById('endpoint-url').textContent = endpointUrl;
+        }
+    </script>
+</body>
+</html>
