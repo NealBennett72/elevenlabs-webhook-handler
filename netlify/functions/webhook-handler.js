@@ -7,7 +7,7 @@ const openai = new OpenAI({
 });
 
 // Mandrill SMTP configuration using environment variables
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   host: process.env.MANDRILL_HOST || 'smtp.mandrillapp.com',
   port: 587,
   secure: false,
