@@ -6,13 +6,13 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Mandrill SMTP configuration using environment variables
-const transporter = nodemailer.createTransport({
-  host: process.env.MANDRILL_HOST || 'smtp.mandrillapp.com',
+// Mandrill SMTP configuration
+const transporter = nodemailer.createTransporter({
+  host: 'smtp.mandrillapp.com',
   port: 587,
   secure: false,
   auth: {
-    user: process.env.MANDRILL_USER,
+    user: process.env.MANDRILL_USERNAME,
     pass: process.env.MANDRILL_API_KEY,
   },
 });
@@ -46,7 +46,7 @@ exports.handler = async (event, context) => {
 
     // Use OpenAI to create a human-readable summary
     const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      model: 'gpt-4',
       messages: [
         {
           role: 'system',
@@ -90,9 +90,9 @@ exports.handler = async (event, context) => {
     const mailOptions = {
       from: process.env.MANDRILL_USER,
       to: process.env.TARGET_EMAIL || 'info@beethovenathome.com',
-      subject: 'ElevenLabs Transcript Summary',
+      subject: 'New Music Lesson Inquiry - Client Call',
       html: emailHtml,
-      text: `Summary:\n${summary}\n\nFull Transcript:\n${transcript}`,
+      text: `New Music Lesson Inquiry\n\nSummary:\n${summary}\n\nFull Transcript:\n${transcript}${transcriptUrl ? `\n\nTranscript URL: ${transcriptUrl}` : ''}${audioUrl ? `\nAudio Recording: ${audioUrl}` : ''}`,
     };
 
     await transporter.sendMail(mailOptions);
