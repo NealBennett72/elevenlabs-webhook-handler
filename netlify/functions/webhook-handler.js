@@ -7,7 +7,7 @@ const openai = new OpenAI({
 });
 
 // Mandrill SMTP configuration
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   host: 'smtp.mandrillapp.com',
   port: 587,
   secure: false,
